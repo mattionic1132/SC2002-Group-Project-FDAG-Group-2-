@@ -1,9 +1,8 @@
 package com.combat.model;
 
+import com.combat.effects.StatusEffect;
 import java.util.ArrayList;
 import java.util.List;
-import com.combat.effects.StatusEffect;
-import com.combat.actions.Action;
 
 public abstract class Combatant {
 
@@ -17,7 +16,7 @@ public abstract class Combatant {
     private boolean smokeBombActive = false;
 
     // change List<Object> to List<StatusEffect> when M4 merges
-    private List<Object> statusEffects;
+    private List<StatusEffect> statusEffects;
 
     public Combatant(String name, int maxHp, int attack, int defense, int speed) {
         this.name = name;
@@ -39,19 +38,23 @@ public abstract class Combatant {
         return this.hp > 0;
     }
 
+    // logic for applying status effects based on tick and duration
     public void applyStatusEffects() {
-        // TODO: uncomment when M4 merges
-        // List<StatusEffect> expired = new ArrayList<>();
-        // for (StatusEffect effect : statusEffects) {
-        //     effect.apply(this);
-        //     effect.tick();
-        //     if (effect.isExpired()) expired.add(effect);
-        // }
-        // statusEffects.removeAll(expired);
+        List<StatusEffect> expired = new ArrayList<>();
+        for (StatusEffect effect : statusEffects) {
+            effect.apply(this);
+            effect.tick();
+            // effect is removed via interface method when expired = True
+            if (effect.isExpired()) {
+                effect.remove(this);
+                expired.add(effect);
+            }
+        }
+        statusEffects.removeAll(expired);
     }
 
     // change Object to StatusEffect when M4 merges
-    public void addStatusEffect(Object effect) {
+    public void addStatusEffect(StatusEffect effect) {
         this.statusEffects.add(effect);
     }
 
@@ -68,7 +71,7 @@ public abstract class Combatant {
     public int getSpeed()                 { return speed; }
     public boolean isStunned()            { return stunned; }
     public boolean isSmokeBombActive()    { return smokeBombActive; }
-    public List<Object> getStatusEffects(){ return statusEffects; }
+    public List<StatusEffect> getStatusEffects() { return statusEffects; }
 
     // ─── Setters ──────────────────────────────────────────────────────
 

@@ -1,5 +1,7 @@
 package com.combat.effects;
 
+import com.combat.model.Combatant;
+
 // Calling Combatant from com.combat.model - replace Object with Combatant when M1 finalises
 public class StunEffect implements StatusEffect {
 
@@ -10,9 +12,13 @@ public class StunEffect implements StatusEffect {
     }
 
     @Override
-    public void apply(Object target) {
-        // TODO: cast target to Combatant and call target.setStunned(true)
-        // Calling Combatant.setStunned() from com.combat.model
+    public void apply(Combatant target) {
+        target.setStunned(true);
+    }
+
+    @Override
+    public void remove(Combatant target) {
+        target.setStunned(false);
     }
 
     @Override

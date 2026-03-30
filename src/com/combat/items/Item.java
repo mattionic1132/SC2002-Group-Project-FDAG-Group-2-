@@ -10,4 +10,3 @@ public interface Item {
 
     void use(Combatant source, BattleEngine context);
 }
-}

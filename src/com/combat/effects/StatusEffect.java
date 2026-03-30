@@ -1,8 +1,11 @@
 package com.combat.effects;
 
+import com.combat.model.Combatant;
+
 public interface StatusEffect {
-    void apply(Object target); // target is Combatant - replace Object when M1 finalises
+    void apply(Combatant target); // target is Combatant
     void tick();
+    void remove(Combatant target);
     boolean isExpired();
 }
 
