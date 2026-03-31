@@ -16,6 +16,8 @@ public abstract class Player extends Combatant {
         this.skillCooldown = 0;
     }
 
+    public abstract Object performAction();
+
     // require item interface
     public void addItem(Item item) {
         this.items.add(item);

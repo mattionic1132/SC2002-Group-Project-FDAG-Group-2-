@@ -1,5 +1,7 @@
 package com.combat.effects;
 
+import com.combat.model.Combatant;
+
 public class DefendBuff implements StatusEffect {
 
     private int duration = 2;
@@ -7,10 +9,15 @@ public class DefendBuff implements StatusEffect {
     private boolean applied = false;
 
     @Override
-    public void apply(Object target) {
+    public void apply(Combatant target) {
         // TODO: cast target to Combatant and call target.setDefense(target.getDefense() + DEFENSE_BONUS)
         // Calling Combatant.setDefense(), Combatant.getDefense() from com.combat.model
         applied = true;
+    }
+
+    @Override
+    public void remove(Combatant target) {
+        target.setDefense(target.getDefense() - DEFENSE_BONUS);
     }
 
     @Override

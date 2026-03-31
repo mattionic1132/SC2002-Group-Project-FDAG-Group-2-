@@ -14,5 +14,5 @@ public abstract class Enemy extends Combatant {
      * Calling Action interface from package com.combat.actions
      */
     @Override
-    public abstract void performAction();
+    public abstract Object performAction();
 }

@@ -1,5 +1,7 @@
 package com.combat.effects;
 
+import com.combat.model.Combatant;
+
 // Calling Combatant from com.combat.model - replace Object with Combatant when M1 finalises
 // Calling Wizard from com.combat.model
 public class ArcaneBuff implements StatusEffect {
@@ -9,9 +11,14 @@ public class ArcaneBuff implements StatusEffect {
     private boolean expired = false;
 
     @Override
-    public void apply(Object target) {
-        // TODO: cast target to Combatant and call target.setAttack(target.getAttack() + ATTACK_BONUS)
-        // Calling Combatant.setAttack(), Combatant.getAttack() from com.combat.model
+    public void apply(Combatant target) {
+        target.setAttack(target.getAttack() + ATTACK_BONUS);
+
+    }
+
+    @Override
+    public void remove(Combatant target) {
+        //to fill
     }
 
     @Override
@@ -28,5 +35,10 @@ public class ArcaneBuff implements StatusEffect {
     // Called by BattleEngine at end of level
     public void expire() {
         expired = true;
+    }
+
+    // added kill-bonus method
+    public void addKillBonus(Combatant target) {
+        target.setAttack(target.getAttack() + ATTACK_BONUS);
     }
 }

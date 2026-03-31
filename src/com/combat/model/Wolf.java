@@ -21,8 +21,9 @@ public class Wolf extends Enemy {
      * Calling Combatant class from package com.combat.model (as target)
      */
     @Override
-    public void performAction() {
+    public Object performAction() {
         // TODO: implement BasicAttack execution
         // new BasicAttack().execute(this, targets);
+        return null;
     }
 }

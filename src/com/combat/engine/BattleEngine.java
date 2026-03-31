@@ -1,5 +1,8 @@
 package com.combat.engine;
 
+import com.combat.model.Enemy;
+import com.combat.model.Player;
+
 import java.util.List;
 
 // Calling Player class from package com.combat.model
@@ -11,10 +14,10 @@ import java.util.List;
 public class BattleEngine {
 
     // Calling Player class from package com.combat.model
-    private Object player;              // Player
+    private Player player;              // Player
 
     // Calling Enemy class from package com.combat.model
-    private List<?> enemies;            // List<Enemy>
+    private List<Enemy> enemies;            // List<Enemy>
 
     // Calling TurnOrderStrategy interface from package com.combat.engine
     private TurnOrderStrategy turnOrder;
@@ -22,7 +25,7 @@ public class BattleEngine {
     private Level level;
     private int roundCount;
 
-    public BattleEngine(Object player, List<?> enemies, Level level) {
+    public BattleEngine(Player player, List<Enemy> enemies, Level level) {
         this.player = player;
         this.enemies = enemies;
         this.level = level;
