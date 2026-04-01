@@ -22,3 +22,27 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 replay_pid*
+
+# IDE - JetBrains (IntelliJ, Android Studio, etc.)
+.idea/
+*.iml
+cmake-build-*/
+
+# macOS System Files
+.DS_Store
+
+# Xcode / Swift
+build/
+DerivedData/
+*.xcodeproj/project.xcworkspace/xcuserdata/
+*.xcworkspace/xcuserdata/
+*.moved-aside
+*.xcuserstate
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+env/
+
