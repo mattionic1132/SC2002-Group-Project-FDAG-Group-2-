@@ -31,5 +31,5 @@ public class SmokeBombEffect implements StatusEffect {
         return duration;
     }
 
-    @Override public boolean preventsAction() { return true; }
+    @Override public boolean preventsAction() { return false; }
 }
