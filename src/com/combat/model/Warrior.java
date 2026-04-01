@@ -16,10 +16,7 @@ public class Warrior extends Player {
      * Actual execution handled by ShieldBash class in com.combat.actions.
      * Calling ShieldBash from com.combat.actions
      */
-    public void shieldBash() {
-        // TODO: call ShieldBash.execute() when M3 merges
-        // new ShieldBash().execute(this, targets);
-    }
+
 
     /**
      * Player chooses action via GameCLI.

@@ -35,4 +35,6 @@ public class DefendBuff implements StatusEffect {
     public int getDuration() {
         return duration;
     }
+
+    @Override public boolean preventsAction() { return false; }
 }

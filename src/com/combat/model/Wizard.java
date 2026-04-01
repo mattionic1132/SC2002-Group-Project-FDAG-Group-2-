@@ -18,10 +18,7 @@ public class Wizard extends Player {
      * Actual execution handled by ArcaneBlast class in com.combat.actions.
      * Calling ArcaneBlast from com.combat.actions
      */
-    public void arcaneBlast() {
-        // TODO: call ArcaneBlast.execute() when M3 merges
-        // new ArcaneBlast().execute(this, targets);
-    }
+
 
     /**
      * Player chooses action via GameCLI.

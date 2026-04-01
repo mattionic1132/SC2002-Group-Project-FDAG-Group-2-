@@ -7,5 +7,6 @@ public interface StatusEffect {
     void tick();
     void remove(Combatant target);
     boolean isExpired();
+    boolean preventsAction();
 }
 

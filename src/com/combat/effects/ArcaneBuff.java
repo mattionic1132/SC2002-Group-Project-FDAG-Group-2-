@@ -41,4 +41,6 @@ public class ArcaneBuff implements StatusEffect {
     public void addKillBonus(Combatant target) {
         target.setAttack(target.getAttack() + ATTACK_BONUS);
     }
+
+    @Override public boolean preventsAction() { return false; }
 }

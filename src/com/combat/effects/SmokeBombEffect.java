@@ -30,4 +30,6 @@ public class SmokeBombEffect implements StatusEffect {
     public int getDuration() {
         return duration;
     }
+
+    @Override public boolean preventsAction() { return true; }
 }

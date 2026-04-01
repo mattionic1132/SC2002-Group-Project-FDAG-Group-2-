@@ -18,13 +18,14 @@ public class ArcaneBlast extends SpecialSkill {
             target.takeDamage(damage);
 
             // when enemy killed add kill-bonus by calling method
+            // The Kill Bonus: If the enemy dies, permanently add +10 ATK
             if (!target.isAlive()) {
-                buff.addKillBonus(source);
+                System.out.println(target.getName() + " was defeated! Wizard gains +10 Attack!");
+
+                // We directly grab the current attack and add 10 to it!
+                source.setAttack(source.getAttack() + 10);
             }
         }
 
-        // add status effect after loop end
-        source.addStatusEffect(buff);
-        resetCooldown();
     }
 }
