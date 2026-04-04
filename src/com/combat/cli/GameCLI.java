@@ -150,7 +150,7 @@ public class GameCLI {
         StringBuilder playerStatus = new StringBuilder();
         for (Combatant p : players) {
             playerStatus.append(String.format(" | %s HP: %d/%d", p.getName(), p.getHp(), p.getMaxHp()));
-            if (p.isStunned()){
+            if (!p.canAct()){
                 playerStatus.append(" [STUNNED]");
             }
         }

@@ -2,7 +2,7 @@ package com.combat.effects;
 
 import com.combat.model.Combatant;
 
-// Calling Combatant from com.combat.model - replace Object with Combatant when M1 finalises
+// Calling Combatant from com.combat.model
 public class SmokeBombEffect implements StatusEffect {
 
     private int duration = 2;

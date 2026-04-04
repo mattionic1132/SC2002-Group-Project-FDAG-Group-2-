@@ -2,7 +2,6 @@ package com.combat.engine;
 
 import com.combat.model.Enemy;
 import com.combat.model.Player;
-
 import java.util.List;
 
 // Calling Player class from package com.combat.model
@@ -10,7 +9,7 @@ import java.util.List;
 // Calling Combatant class from package com.combat.model
 // Calling Action interface from package com.combat.actions
 // Calling StatusEffect interface from package com.combat.effects
-// Calling GameCLI class from package com.combat.ui
+// Calling GameCLI class from package com.combat.cli
 public class BattleEngine {
 
     // Calling Player class from package com.combat.model

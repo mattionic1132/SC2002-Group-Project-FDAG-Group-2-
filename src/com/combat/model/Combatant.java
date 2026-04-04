@@ -1,5 +1,6 @@
 package com.combat.model;
 
+import com.combat.actions.Action;
 import com.combat.effects.StatusEffect;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +27,7 @@ public abstract class Combatant {
         this.statusEffects = new ArrayList<>();
     }
 
-    // ─── Combat Methods ───────────────────────────────────────────────
+    // Combat Methods
 
     public void takeDamage(int damage) {
         this.hp = Math.max(0, this.hp - damage);
@@ -36,10 +37,9 @@ public abstract class Combatant {
         return this.hp > 0;
     }
 
-    // ─── Status Checks ────────────────────────────────────────────────
+    // Status Checks
 
     // Replaces isStunned(). Checks if any active effect prevents moving.
-    // TODO M4: Ensure StatusEffect interface has a boolean preventsAction() method!
     public boolean canAct() {
         for (StatusEffect effect : statusEffects) {
             if (effect.preventsAction()) {
@@ -70,9 +70,9 @@ public abstract class Combatant {
     }
 
     // changed Object to Action after status effect merged
-    public abstract Object performAction();
+    public abstract Action performAction();
 
-    // ─── Getters ──────────────────────────────────────────────────────
+    // Getters
 
     public String getName()               { return name; }
     public int getHp()                    { return hp; }
@@ -83,12 +83,14 @@ public abstract class Combatant {
 
     public List<StatusEffect> getStatusEffects() { return statusEffects; }
 
-    // ─── Setters ──────────────────────────────────────────────────────
+    // Setters
 
     public void setHp(int hp)                         { this.hp = Math.max(0, Math.min(hp, maxHp)); }
     public void setAttack(int attack)                 { this.attack = attack; }
     public void setDefense(int defense)               { this.defense = defense; }
 
-    public void setSmokeBombActive(boolean b) {
-    }
+    // matt added the booleans and bool setter
+    private boolean smokeBombActive = false;
+    public boolean isSmokeBombActive()             { return smokeBombActive; }
+    public void setSmokeBombActive(boolean active) { this.smokeBombActive = active; }
 }
