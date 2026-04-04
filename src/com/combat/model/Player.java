@@ -2,6 +2,7 @@ package com.combat.model;
 import java.util.ArrayList;
 import java.util.List;
 import com.combat.items.Item;
+import com.combat.actions.SpecialSkill;
 
 
 public abstract class Player extends Combatant {
@@ -37,6 +38,12 @@ public abstract class Player extends Combatant {
             this.skillCooldown--;
         }
     }
+
+    // matt added this to use SpecialSkill from actions package
+    private SpecialSkill specialSkill;
+    public void setSpecialSkill(SpecialSkill skill) { this.specialSkill = skill; }
+    public Object getSpecialSkill()           { return this.specialSkill; }
+
 
     public boolean isSkillReady() {
         return this.skillCooldown == 0;

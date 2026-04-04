@@ -13,7 +13,7 @@ public abstract class Combatant {
     private int defense;
     private int speed;
 
-    // change List<Object> to List<StatusEffect> when M4 merges
+    // changed List<Object> to List<StatusEffect> after status effect merged
     private List<StatusEffect> statusEffects;
 
     public Combatant(String name, int maxHp, int attack, int defense, int speed) {
@@ -64,12 +64,12 @@ public abstract class Combatant {
         statusEffects.removeAll(expired);
     }
 
-    // change Object to StatusEffect when M4 merges
+    // changed Object to StatusEffect after status effect merged
     public void addStatusEffect(StatusEffect effect) {
         this.statusEffects.add(effect);
     }
 
-    // change Object to Action when M3 merges
+    // changed Object to Action after status effect merged
     public abstract Object performAction();
 
     // ─── Getters ──────────────────────────────────────────────────────
@@ -88,4 +88,7 @@ public abstract class Combatant {
     public void setHp(int hp)                         { this.hp = Math.max(0, Math.min(hp, maxHp)); }
     public void setAttack(int attack)                 { this.attack = attack; }
     public void setDefense(int defense)               { this.defense = defense; }
+
+    public void setSmokeBombActive(boolean b) {
+    }
 }
