@@ -140,8 +140,10 @@ public class GameCLI {
     }
 
 
-
-    public void showRoundSummary(int roundNumber, List<Combatant> players, boolean gameIsOver, SpecialSkill skill) {
+    // matt changed method siganture to use separate integer count
+    public void showRoundSummary(int roundNumber, List<Combatant> players,
+                                 boolean gameIsOver, SpecialSkill skill,
+                                 int potionCount, int smokeBombCount) {
         /**
          * Displays the end-of-round status bar and prepares the player for the next round.
          * Corresponds to Game Flow Examples [cite: 256-257, 294-295].
@@ -156,12 +158,12 @@ public class GameCLI {
         }
 
         // Format the round statistics line
-        System.out.printf("End of Round %d: %s HP: %d/%d%s | Potion: %d | Smoke Bomb: %d | Special Skills Cooldown: %d rounds%n",
+        System.out.printf("End of Round %d:%s | Potion: %d | Smoke Bomb: %d | Special Skill Cooldown: %d rounds%n",
                 roundNumber,
                 playerStatus.toString(),
-                players.getItemCount("Potion"),
-                players.getItemCount("Smoke Bomb"),
-                skill.getCooldown() //TODO: SpecialSkill can be used with Player class
+                potionCount,
+                smokeBombCount,
+                skill.getCooldown()
         );
 
         System.out.println("--------------------------------------------------------------------------------");
