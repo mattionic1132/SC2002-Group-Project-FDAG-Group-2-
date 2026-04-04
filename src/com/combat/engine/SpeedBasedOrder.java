@@ -1,22 +1,21 @@
 package com.combat.engine;
 
+import com.combat.model.Combatant;
+import java.util.Comparator; //need to import this to compare combatants
 import java.util.List;
 
-// Calling Combatant class from package com.combat.model
-// Calling TurnOrderStrategy interface from package com.combat.engine
 public class SpeedBasedOrder implements TurnOrderStrategy {
 
-    /**
-     * Sorts combatants by speed descending — highest speed goes first.
-     * Calling Combatant.getSpeed() from package com.combat.model
-     *
-     * @param combatants all active combatants in the battle
-     * @return list sorted by speed descending
-     */
+    // sort combatants by speed, highest goes first
     @Override
-    public List<?> determineOrder(List<?> combatants) {
-        // TODO: sort combatants by getSpeed() descending
-        // combatants.sort((a, b) -> b.getSpeed() - a.getSpeed());
+    public List<Combatant> determineOrder(List<Combatant> combatants) {
+        combatants.sort(new Comparator<Combatant>() {
+            @Override
+            public int compare(Combatant first_combatant, Combatant second_combatant) {
+                // higher speed goes first, subtract first from second for descending order
+                return second_combatant.getSpeed() - first_combatant.getSpeed();
+            }
+        });
         return combatants;
     }
 }
