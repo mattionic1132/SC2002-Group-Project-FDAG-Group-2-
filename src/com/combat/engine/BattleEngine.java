@@ -237,8 +237,18 @@ public class BattleEngine {
             action = skill;
         }
 
-        if (action == null) {
+        if (action != null) {
             action.execute(player, targets);
+
+            // get outcome from action itself each action describes what happened (after shafi push)
+            String outcome = action.getOutcome(player, targets);
+            Combatant target = targets.isEmpty() ? null : targets.get(0);
+            cli.showCombatantAction(player, target, action, outcome);
+
+            // check if any target was eliminated after action
+            for (Combatant t : targets) {
+                if (!t.isAlive()) cli.showCombatantAction(t);
+            }
         }
     }
 
@@ -254,7 +264,10 @@ public class BattleEngine {
         targets.add(player);
         Action attack = new BasicAttack();
         attack.execute(enemy, targets);
-        System.out.println(enemy.getName() + " attacks " + player.getName() + "!");
+
+        // get outcome from action itself (after shafi push)
+        String outcome = attack.getOutcome(enemy, targets);
+        cli.showCombatantAction(enemy, player, attack, outcome);
     }
 
     // returns list of enemies still alive this round
