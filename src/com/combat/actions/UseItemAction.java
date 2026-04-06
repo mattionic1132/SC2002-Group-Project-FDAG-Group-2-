@@ -16,7 +16,12 @@ public class UseItemAction implements Action {
     }
 
     @Override
-    public void execute(Combatant source, List<Combatant> targets) {
+    public void execute(Combatant source, List<Combatant> targets){
         item.use(source, context);
+    }
+    // added the get puctome implementation needed from interface
+    @Override
+    public String getOutcome(Combatant source, List<Combatant> targets) {
+        return ": HP restored";
     }
 }

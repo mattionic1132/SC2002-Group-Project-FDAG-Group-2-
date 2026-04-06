@@ -15,4 +15,16 @@ public class ShieldBash extends SpecialSkill {
         target.takeDamage(damage);
         target.addStatusEffect(new StunEffect(2));
     }
+
+    // added the getting outcome for shiled bash
+    @Override
+    public String getOutcome(Combatant source, List<Combatant> targets) {
+        Combatant target = targets.get(0);
+        String result = ": " + target.getName() + " STUNNED for 2 turns";
+        if (!target.isAlive()) {
+            result += " | ELIMINATED";
+            return result;
+        }
+        return result;
+    }
 }
