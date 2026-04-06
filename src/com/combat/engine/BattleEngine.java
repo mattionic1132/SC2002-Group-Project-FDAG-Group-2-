@@ -87,7 +87,8 @@ public class BattleEngine {
      */
 
     public void processRound() {
-
+        // fix no counter
+        roundCount++;
         System.out.println("\n======== ROUND " + roundCount + " ========");
 
         // check if backup wave should spawn at start of round
@@ -115,7 +116,8 @@ public class BattleEngine {
             combatant.applyStatusEffects();
 
             // skip turn if stunned or otherwise prevented from acting
-            if (combatant.canAct()) {
+            // fix logic wrong from group review
+            if (!combatant.canAct()) {
                 cli.showCombatantAction(combatant, "");
                 continue;
             }
@@ -212,7 +214,8 @@ public class BattleEngine {
                     break;
                 }
             }
-            if (action = null) {
+            // fix no = sign
+            if (action == null) {
                 System.out.println("No items available!");
                 return;
             }

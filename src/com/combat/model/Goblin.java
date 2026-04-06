@@ -1,8 +1,8 @@
 package com.combat.model;
+// note for goblin and enemy the basic attack execution is in battle engine
+import com.combat.actions.Action;
+import com.combat.actions.BasicAttack;
 
-// Calling Enemy class from package com.combat.model
-// Calling Action interface from package com.combat.actions
-// Calling BasicAttack class from package com.combat.actions
 public class Goblin extends Enemy {
 
     private static final int GOBLIN_HP      = 55;
@@ -16,14 +16,14 @@ public class Goblin extends Enemy {
     }
 
     /**
-     * Goblin always performs BasicAttack on its turn.
+     * goblin always performs BasicAttack on its turn.
      * Calling BasicAttack class from package com.combat.actions
      * Calling Combatant class from package com.combat.model (as target)
      */
+
     @Override
-    public Object performAction() {
-        // TODO: implement BasicAttack execution
-        // new BasicAttack().execute(this, targets);
-        return null;
+    public Action performAction() {
+        // goblin always uses basic attack
+        return new BasicAttack();
     }
 }

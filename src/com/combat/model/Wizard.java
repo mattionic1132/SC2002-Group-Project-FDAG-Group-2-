@@ -1,8 +1,6 @@
 package com.combat.model;
 
-// import com.combat.actions.Action;       ← uncomment when M3 merges
-// import com.combat.actions.ArcaneBlast;  ← uncomment when M3 merges
-// import com.combat.model.Enemy;          ← already in same package, no import needed
+import com.combat.actions.Action;
 
 public class Wizard extends Player {
 
@@ -25,11 +23,9 @@ public class Wizard extends Player {
      * BattleEngine passes the chosen Action back to execute.
      * Calling Action interface from com.combat.actions
      */
+
     @Override
-    public Object performAction() {
-        // TODO: change return type from Object to Action when M3 merges
-        // GameCLI handles user input and returns chosen Action
-        // BattleEngine calls action.execute(this, targets)
-        return null;
+    public Action performAction() {
+        return null; // BattleEngine handles player action via CLI
     }
 }

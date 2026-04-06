@@ -1,8 +1,7 @@
 package com.combat.model;
 
-// Calling Enemy class from package com.combat.model
-// Calling Action interface from package com.combat.actions
-// Calling BasicAttack class from package com.combat.actions
+import com.combat.actions.Action;
+import com.combat.actions.BasicAttack;
 public class Wolf extends Enemy {
 
     private static final int WOLF_HP      = 40;
@@ -20,10 +19,9 @@ public class Wolf extends Enemy {
      * Calling BasicAttack class from package com.combat.actions
      * Calling Combatant class from package com.combat.model (as target)
      */
+
     @Override
-    public Object performAction() {
-        // TODO: implement BasicAttack execution
-        // new BasicAttack().execute(this, targets);
-        return null;
+    public Action performAction() {
+        return new BasicAttack();
     }
 }

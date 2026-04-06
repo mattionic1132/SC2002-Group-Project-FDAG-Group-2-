@@ -1,6 +1,6 @@
 package com.combat.model;
 
-// Calling Combatant class from package com.combat.model
+
 public abstract class Enemy extends Combatant {
 
     public Enemy(String name, int hp, int attack, int defense, int speed) {
@@ -13,6 +13,7 @@ public abstract class Enemy extends Combatant {
      * Calling BasicAttack class from package com.combat.actions
      * Calling Action interface from package com.combat.actions
      */
+// accidentally merged old --> change back to Action
     @Override
-    public abstract Object performAction();
+    public abstract Action performAction();
 }
