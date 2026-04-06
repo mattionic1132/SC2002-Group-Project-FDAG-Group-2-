@@ -246,7 +246,17 @@ public class BattleEngine {
             // get outcome from action itself each action describes what happened (after shafi push)
             String outcome = action.getOutcome(player, targets);
             Combatant target = targets.isEmpty() ? null : targets.get(0);
-            cli.showCombatantAction(player, target, action, outcome);
+
+            // matt added condition check --> items and defend affect the player only (no enemy target)
+            // showCombatantAction(subject, target, action, outcome) requires a target
+            // so if target is null, print action result directly to avoid NullPointerException
+            if (target == null) {
+                System.out.println(player.getName() + " -> " + action.getClass().getSimpleName() + outcome);
+            }
+
+            else {
+                cli.showCombatantAction(player, target, action, outcome);
+            }
 
             // check if any target was eliminated after action
             for (Combatant t : targets) {
