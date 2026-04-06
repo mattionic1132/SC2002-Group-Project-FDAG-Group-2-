@@ -1,94 +1,74 @@
 package com.combat.engine;
 
+import com.combat.actions.Action;
+import com.combat.actions.BasicAttack;
+import com.combat.actions.Defend;
+import com.combat.actions.SpecialSkill;
+import com.combat.actions.UseItemAction;
 import com.combat.cli.GameCLI;
-import com.combat.cli.GameSettings;
+import com.combat.items.Item;
+import com.combat.model.Combatant;
 import com.combat.model.Enemy;
 import com.combat.model.Player;
-import com.combat.model.Warrior;
-import com.combat.model.Wizard;
+
+import java.util.ArrayList;
 import java.util.List;
 
-// Calling Player class from package com.combat.model
-// Calling Enemy class from package com.combat.model
-// Calling Combatant class from package com.combat.model
-// Calling Action interface from package com.combat.actions
-// Calling StatusEffect interface from package com.combat.effects
-// Calling GameCLI class from package com.combat.cli
-public class Main {
-    public static void main(String[] args) {
+// NOTE: firsy draft of Battle Engine but need to figure out whether:
+// restructure player and special Skill
+// check for error and do main after
 
-        // create GameCLI instance
-        GameCLI cli = new GameCLI();
 
-        // call showLoadingScreen() to get player selections
-        GameSettings settings = cli.showLoadingScreen();
-
-        // create player based on characterType
-        Player player;
-        if (settings.getCharacterType() == 1) {
-            player = new Warrior("Warrior");
-            player.setSpecialSkill(new ShieldBash());
-        } else {
-            player = new Wizard("Wizard");
-            player.setSpecialSkill(new ArcaneBlast());
-        }
-
-        // loop through itemIndices and add items to player
-        for (int index : settings.getItemIndices()) {
-            Item item;
-            if (index == 1) {
-                item = new Potion();
-            } else if (index == 2) {
-                item = new PowerStone();
-            } else if (index == 3) {
-                item = new SmokeBomb();
-            } else {
-                continue;
-            }
-            player.addItem(item);
-        }
-
-        // create Level with chosen difficulty
-        Level level = new Level(settings.getDifficulty());
-
-        // get initial enemies from level
-        List<Enemy> enemies = level.getEnemies();
-
-        // create BattleEngine and start battle
-        BattleEngine engine = new BattleEngine(player, enemies, level, cli);
-        engine.startBattle();
-    }
-}
 public class BattleEngine {
 
     // Calling Player class from package com.combat.model
-    private Player player;              // Player
+    private Player player;
 
     // Calling Enemy class from package com.combat.model
-    private List<Enemy> enemies;            // List<Enemy>
+    private List<Enemy> enemies;
 
     // Calling TurnOrderStrategy interface from package com.combat.engine
     private TurnOrderStrategy turnOrder;
 
+    // Calling GameCLI class from package com.combat.cli
+    private GameCLI cli;
+
     private Level level;
     private int roundCount;
 
-    public BattleEngine(Player player, List<Enemy> enemies, Level level) {
+    public BattleEngine(Player player, List<Enemy> enemies, Level level, GameCLI cli) {
         this.player = player;
         this.enemies = enemies;
         this.level = level;
+        this.cli = cli;
         this.turnOrder = new SpeedBasedOrder();
         this.roundCount = 0;
     }
 
     /**
      * Entry point called by GameCLI to start the battle loop.
-     * Calling GameCLI class from package com.combat.ui
+     * Calling GameCLI class from package com.combat.cli
      */
     public void startBattle() {
-        // TODO: loop calling processRound() until checkBattleEnd() is true
+        System.out.println("\nBattle Start!\n");
+
+        while (!checkBattleEnd()) {
+            processRound();
+        }
+
+        // show appropriate end screen based on outcome
+        if (player.isAlive()) {
+            cli.showVictoryScreen(player, roundCount);
+        } else {
+            int remaining = 0;
+            for (Enemy e : enemies) {
+                if (e.isAlive()) remaining++;
+            }
+            cli.showDefeatScreen(remaining, roundCount);
+        }
     }
 
+    // Rough layout og process below
     /**
      * Processes a single round of combat.
      * Order of operations:
@@ -103,11 +83,62 @@ public class BattleEngine {
      * Calling Combatant.applyStatusEffects() from package com.combat.model
      * Calling Action.execute() from package com.combat.actions
      * Calling StatusEffect.tick() from package com.combat.effects
-     * Calling GameCLI.showRoundSeummary() from package com.combat.ui
+     * Calling GameCLI.showRoundSummary() from package com.combat.cli
      */
+
     public void processRound() {
-        // TODO: implement round loop
-        roundCount++;
+
+        System.out.println("\n======== ROUND " + roundCount + " ========");
+
+        // check if backup wave should spawn at start of round
+        if (level.shouldTriggerBackup()) {
+            triggerBackupSpawn();
+        }
+
+        // build combatant list for this round (player + all alive enemies)
+        List<Combatant> allCombatants = new ArrayList<>();
+        allCombatants.add(player);
+        for (Enemy e : enemies) {
+            if (e.isAlive()) allCombatants.add(e);
+        }
+
+        // sort by speed descending via TurnOrderStrategy
+        List<Combatant> orderedCombatants = turnOrder.determineOrder(allCombatants);
+
+        // each combatant takes their turn in order
+        for (Combatant combatant : orderedCombatants) {
+
+            // skip if eliminated mid-round
+            if (!combatant.isAlive()) continue;
+
+            // apply status effects at start of each turn
+            combatant.applyStatusEffects();
+
+            // skip turn if stunned or otherwise prevented from acting
+            if (combatant.canAct()) {
+                cli.showCombatantAction(combatant, "");
+                continue;
+            }
+
+            // player turn - get action choice from CLI
+            if (combatant instanceof Player) {
+                List<Combatant> aliveEnemies = getAliveEnemies();
+                List<Integer> choices = cli.promptPlayerAction(combatant, aliveEnemies);
+                handlePlayerAction((Player) combatant, choices, aliveEnemies);
+
+            } else {
+                // enemy turn - always basic attack on player
+                handleEnemyAction((Enemy) combatant);
+            }
+
+            // check if battle ended after every single action
+            if (checkBattleEnd()) return;
+        }
+
+        // display end of round summary
+        int potionCount = countItem("Potion");
+        int smokeBombCount = countItem("SmokeBomb");
+        cli.showRoundSummary(roundCount, allCombatants, false, player.getSpecialSkill(), potionCount, smokeBombCount);
     }
 
     /**
@@ -117,14 +148,25 @@ public class BattleEngine {
      *
      * Calling Player.isAlive() from package com.combat.model
      * Calling Enemy.isAlive() from package com.combat.model
-     * Calling GameCLI.showVictoryScreen() from package com.combat.ui
-     * Calling GameCLI.showDefeatScreen() from package com.combat.ui
+     * Calling GameCLI.showVictoryScreen() from package com.combat.cli
+     * Calling GameCLI.showDefeatScreen() from package com.combat.cli
      *
-     * @return true if battle is over
+     * return true if battle is over
      */
     public boolean checkBattleEnd() {
-        // TODO: check player alive and all enemies defeated
-        return false;
+        // lose condition - player defeated
+        if (!player.isAlive()) return true;
+
+        // check if any enemy is still alivw
+        for (Enemy e : enemies) {
+            if (e.isAlive()) return false;
+        }
+
+        // all enemies dead - check if backup can still spawn
+        if (level.shouldTriggerBackup()) return false;
+
+        // all enemies dead, no backup remaining - player wins
+        return true;
     }
 
     /**
@@ -132,14 +174,108 @@ public class BattleEngine {
      * Called when initial wave is fully defeated.
      *
      * Calling Level.getBackupEnemies() from package com.combat.engine
-     * Calling GameCLI.showBattleStatus() from package com.combat.ui
+     * Calling GameCLI from package com.combat.cli
      */
     public void triggerBackupSpawn() {
-        // TODO: add backup enemies to active enemies list
-        // set level.setBackupTriggered(true)
+        List<Enemy> backup = level.getBackupEnemies();
+        enemies.addAll(backup);
+        level.setBackupTriggered(true);
+        System.out.println("\n*** BACKUP ENEMIES HAVE ARRIVED! ***");
+        for (Enemy e : backup) {
+            System.out.println("  -> " + e.getName() + " entered the battle!");
+        }
     }
 
-    public int getRoundCount() {
-        return roundCount;
+    // translates player menu choice into an action and executes it
+    private void handlePlayerAction(Player player, List<Integer> choices, List<Combatant> aliveEnemies) {
+        int actionChoice = choices.get(0);
+        int targetIndex = choices.get(1);
+
+        Action action = null;
+        List<Combatant> targets = new ArrayList<>();
+
+        if (actionChoice == 1) {
+            // basic attack - hits selected enemy target
+            action = new BasicAttack();
+            targets.add(aliveEnemies.get(targetIndex));
+
+        } else if (actionChoice == 2) {
+            // defend - no target needed, applies DefendBuff to self
+            action = new Defend();
+
+        } else if (actionChoice == 3) {
+            // use item - find first unused item in inventory
+            for (Item item : player.getItems()) {
+                if (!item.isUsed()) {
+                    action = new UseItemAction(item, this);
+                    cli.showCombatantAction(player, item, "");
+                    break;
+                }
+            }
+            if (action = null) {
+                System.out.println("No items available!");
+                return;
+            }
+
+        } else if (actionChoice == 4) {
+            // special skill - retrieve from player and check cooldown
+            SpecialSkill skill = player.getSpecialSkill();
+            if (skill == null) {
+                System.out.println("No special skill assigned!");
+                return;
+            }
+            if (!skill.isReady()) {
+                System.out.println("Special skill on cooldown! (" + skill.getCooldown() + " rounds remaining)");
+                return;
+            }
+            // shield bash needs a single target, arcane blast hits all enemies
+            if (targetIndex >= 0) {
+                targets.add(aliveEnemies.get(targetIndex));
+            } else {
+                targets.addAll(aliveEnemies);
+            }
+            action = skill;
+        }
+
+        if (action == null) {
+            action.execute(player, targets);
+        }
     }
+
+    // enemy always performs basic attack on player
+    private void handleEnemyAction(Enemy enemy) {
+        // smoke bomb check - if active, enemy attack deals 0 damage
+        if (player.isSmokeBombActive()) {
+            System.out.println(enemy.getName() + " attacks but smoke bomb blocks all damage!");
+            return;
+        }
+
+        List<Combatant> targets = new ArrayList<>();
+        targets.add(player);
+        Action attack = new BasicAttack();
+        attack.execute(enemy, targets);
+        System.out.println(enemy.getName() + " attacks " + player.getName() + "!");
+    }
+
+    // returns list of enemies still alive this round
+    private List<Combatant> getAliveEnemies() {
+        List<Combatant> alive = new ArrayList<>();
+        for (Enemy e : enemies) {
+            if (e.isAlive()) alive.add(e);
+        }
+        return alive;
+    }
+
+    // counts unused items of a given name in player inventory
+    private int countItem(String itemName) {
+        int count = 0;
+        for (Item item : player.getItems()) {
+            if (!item.isUsed() && item.getName().equalsIgnoreCase(itemName)) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public int getRoundCount() { return roundCount; }
 }
