@@ -26,7 +26,8 @@ public class ArcaneBlast extends SpecialSkill {
                 source.setAttack(source.getAttack() + 10);
             }
         }
-
+        resetCooldown();
+    }
         // implement abstract method for Action
         @Override
         public String getOutcome(Combatant source, List<Combatant> targets) {
@@ -40,4 +41,3 @@ public class ArcaneBlast extends SpecialSkill {
         }
 
     }
-}
