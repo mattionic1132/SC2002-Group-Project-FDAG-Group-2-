@@ -87,6 +87,8 @@ public class BattleEngine {
      */
 
     public void processRound() {
+        // fixed round count not implemented
+        roundCount++
 
         System.out.println("\n======== ROUND " + roundCount + " ========");
 
@@ -115,7 +117,7 @@ public class BattleEngine {
             combatant.applyStatusEffects();
 
             // skip turn if stunned or otherwise prevented from acting
-            if (combatant.canAct()) {
+            if (!combatant.canAct()) {
                 cli.showCombatantAction(combatant, "");
                 continue;
             }
@@ -191,16 +193,14 @@ public class BattleEngine {
         int actionChoice = choices.get(0);
         int targetIndex = choices.get(1);
 
-        Action action = null;
+        // fixed missing = sign
+        Action action == null;
         List<Combatant> targets = new ArrayList<>();
 
         if (actionChoice == 1) {
             // basic attack - hits selected enemy target
             action = new BasicAttack();
             targets.add(aliveEnemies.get(targetIndex));
-            // after basic attack executes
-            String outcome = ": HP " + target.getHp() + "/" + target.getMaxHp();
-            cli.showCombatantAction(combatant, target, action, outcome);
 
         } else if (actionChoice == 2) {
             // defend - no target needed, applies DefendBuff to self
@@ -240,8 +240,19 @@ public class BattleEngine {
             action = skill;
         }
 
-        if (action == null) {
+        // fixed nullpointer error
+        if (action != null) {
             action.execute(player, targets);
+
+            // get outcome from action itself, each action describes what happened (after shafi push)
+            String outcome = action.getOutcome(player, targets);
+            Combatant target = targets.isEmpty() ? null : targets.get(0);
+            cli.showCombatantAction(player, target, action, outcome);
+
+            // check if any target was eliminated after action
+            for (Combatant t : targets) {
+                if (!t.isAlive()) cli.showCombatantAction(t);
+            }
         }
     }
 
@@ -257,7 +268,10 @@ public class BattleEngine {
         targets.add(player);
         Action attack = new BasicAttack();
         attack.execute(enemy, targets);
-        System.out.println(enemy.getName() + " attacks " + player.getName() + "!");
+
+        // get outcome from action itself (after shafi push)
+        String outcome = attack.getOutcome(enemy, targets);
+        cli.showCombatantAction(enemy, player, attack, outcome);
     }
 
     // returns list of enemies still alive this round
@@ -280,5 +294,7 @@ public class BattleEngine {
         return count;
     }
 
-    public int getRoundCount() { return roundCount; }
+    public int getRoundCount() {
+        return roundCount;
+    }
 }
