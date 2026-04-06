@@ -1,34 +1,55 @@
 package com.combat;
 
-// go through main pseudo code flow with all members to make sure make sense
+import com.combat.cli.GameCLI;
+import com.combat.cli.GameSettings;
+import com.combat.model.Enemy;
+import com.combat.model.Player;
+import com.combat.model.Warrior;
+import com.combat.model.Wizard;
+
+import java.util.List;
+
 public class Main {
     public static void main(String[] args) {
 
         // create GameCLI instance
+        GameCLI cli = new GameCLI();
 
         // call showLoadingScreen() to get player selections
-        // returns GameSettings object with characterType, itemIndices, difficulty
+        GameSettings settings = cli.showLoadingScreen();
 
-        // if characterType == 1, create Warrior
-        // else create Wizard
+        // create player based on characterType
+        Player player;
+        if (settings.getCharacterType() == 1) {
+            player = new Warrior("Warrior");
+            player.setSpecialSkill(new ShieldBash());
+        } else {
+            player = new Wizard("Wizard");
+            player.setSpecialSkill(new ArcaneBlast());
+        }
 
-        // assign special skill to player
-        // if Warrior, setSpecialSkill(new ShieldBash())
-        // if Wizard, setSpecialSkill(new ArcaneBlast())
-
-        // loop through itemIndices from GameSettings
-        // if index == 1, create Potion
-        // if index == 2, create PowerStone
-        // if index == 3, create SmokeBomb
-        // add each item to player via addItem()
+        // loop through itemIndices and add items to player
+        for (int index : settings.getItemIndices()) {
+            Item item;
+            if (index == 1) {
+                item = new Potion();
+            } else if (index == 2) {
+                item = new PowerStone();
+            } else if (index == 3) {
+                item = new SmokeBomb();
+            } else {
+                continue;
+            }
+            player.addItem(item);
+        }
 
         // create Level with chosen difficulty
-        // Level constructor automatically sets up spawn lists
+        Level level = new Level(settings.getDifficulty());
 
         // get initial enemies from level
+        List<Enemy> enemies = level.getEnemies();
 
-        // create BattleEngine with player, enemies, level, cli
-
-        // call engine.startBattle()
+        // create BattleEngine and start battle
+        BattleEngine engine = new BattleEngine(player, enemies, level, cli);
+        engine.startBattle();
     }
-}

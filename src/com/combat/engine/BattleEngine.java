@@ -198,6 +198,9 @@ public class BattleEngine {
             // basic attack - hits selected enemy target
             action = new BasicAttack();
             targets.add(aliveEnemies.get(targetIndex));
+            // after basic attack executes
+            String outcome = ": HP " + target.getHp() + "/" + target.getMaxHp();
+            cli.showCombatantAction(combatant, target, action, outcome);
 
         } else if (actionChoice == 2) {
             // defend - no target needed, applies DefendBuff to self

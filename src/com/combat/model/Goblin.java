@@ -26,7 +26,7 @@ public class Goblin extends Enemy {
      */
     @Override
     public Action performAction() {
-        // goblin always uses basic attack - execution handled by BattleEngine
+        // goblin always uses basic attack
         return new BasicAttack();
     }
 }

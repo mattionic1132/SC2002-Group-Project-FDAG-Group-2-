@@ -13,4 +13,10 @@ public class Defend implements Action {
         // Calling DefendBuff from com.combat.effects
         source.addStatusEffect(new DefendBuff());
     }
+
+    // implement get outcome for defendd
+    @Override
+    public String getOutcome(Combatant source, List<Combatant> targets) {
+        return ": +10 DEF for 2 rounds";
+    }
 }

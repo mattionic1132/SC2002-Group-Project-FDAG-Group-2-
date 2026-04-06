@@ -13,12 +13,13 @@ public class StunEffect implements StatusEffect {
 
     @Override
     public void apply(Combatant target) {
-        target.setStunned(true);
+        // let stun be handlled by preventsAction
     }
 
     @Override
     public void remove(Combatant target) {
-        target.setStunned(false);
+
+        // preventsAction will return false when expired
     }
 
     @Override

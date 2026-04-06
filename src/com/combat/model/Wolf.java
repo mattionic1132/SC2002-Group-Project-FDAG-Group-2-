@@ -26,7 +26,7 @@ public class Wolf extends Enemy {
      */
     @Override
     public Action performAction() {
-        // wolf always uses basic attack - execution handled by BattleEngine
+        // wolf always uses basic attack
         return new BasicAttack();
     }
 }
