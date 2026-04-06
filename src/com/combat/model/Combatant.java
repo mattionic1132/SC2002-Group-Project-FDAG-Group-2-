@@ -89,8 +89,13 @@ public abstract class Combatant {
     public void setAttack(int attack)                 { this.attack = attack; }
     public void setDefense(int defense)               { this.defense = defense; }
 
-    // matt added the booleans and bool setter
+    // matt added the booleans and bool setter for smoke bomb
     private boolean smokeBombActive = false;
     public boolean isSmokeBombActive()             { return smokeBombActive; }
     public void setSmokeBombActive(boolean active) { this.smokeBombActive = active; }
+
+    // for stun
+    private boolean stunned = false;
+    public boolean isStunned()            { return stunned; }
+    public void setStunned(boolean stunned) { this.stunned = stunned; }
 }

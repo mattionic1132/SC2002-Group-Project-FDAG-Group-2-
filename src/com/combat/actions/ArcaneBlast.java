@@ -27,5 +27,17 @@ public class ArcaneBlast extends SpecialSkill {
             }
         }
 
+        // implement abstract method for Action
+        @Override
+        public String getOutcome(Combatant source, List<Combatant> targets) {
+            StringBuilder result = new StringBuilder(": ArcaneBlast hit all enemies");
+            for (Combatant target : targets) {
+                result.append(" | ").append(target.getName())
+                        .append(" HP: ").append(target.getHp());
+                if (!target.isAlive()) result.append(" ELIMINATED");
+            }
+            return result.toString();
+        }
+
     }
 }

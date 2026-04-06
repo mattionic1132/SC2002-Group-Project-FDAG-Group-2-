@@ -1,5 +1,5 @@
 package com.combat.model;
-
+import com.combat.actions.Action;
 
 public abstract class Enemy extends Combatant {
 
