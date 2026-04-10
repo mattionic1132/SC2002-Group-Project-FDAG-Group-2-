@@ -130,7 +130,7 @@ public class BattleEngine {
 
         // display end of round summary
         int potionCount = countItem("Potion");
-        int smokeBombCount = countItem("SmokeBomb");
+        int smokeBombCount = countItem("Smoke Bomb"); //must make sure follow exactly as in Main
         cli.showRoundSummary(roundCount, allCombatants, false, player.getSpecialSkill(), potionCount, smokeBombCount);
     }
 
@@ -281,5 +281,7 @@ public class BattleEngine {
         return count;
     }
 
-    public int getRoundCount() { return roundCount; }
+    public int getRoundCount() {
+        return roundCount;
+    }
 }
