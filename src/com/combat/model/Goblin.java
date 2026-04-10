@@ -15,11 +15,11 @@ public class Goblin extends Enemy {
         super(name, GOBLIN_HP, GOBLIN_ATTACK, GOBLIN_DEFENSE, GOBLIN_SPEED);
     }
 
-    /**
-     * goblin always performs BasicAttack on its turn.
-     * Calling BasicAttack class from package com.combat.actions
-     * Calling Combatant class from package com.combat.model (as target)
-     */
+
+      // goblin always performs BasicAttack on its turn.
+     // Calling BasicAttack class from package com.combat.actions
+     // Calling Combatant class from package com.combat.model (as target)
+
 
     @Override
     public Action performAction() {

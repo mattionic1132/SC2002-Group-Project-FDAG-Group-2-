@@ -14,11 +14,10 @@ public class Wolf extends Enemy {
         super(name, WOLF_HP, WOLF_ATTACK, WOLF_DEFENSE, WOLF_SPEED);
     }
 
-    /**
-     * Wolf always performs BasicAttack on its turn.
-     * Calling BasicAttack class from package com.combat.actions
-     * Calling Combatant class from package com.combat.model (as target)
-     */
+     // Wolf always performs BasicAttack on its turn.
+     // Calling BasicAttack class from package com.combat.actions
+     // Calling Combatant class from package com.combat.model (as target)
+
 
     @Override
     public Action performAction() {

@@ -9,19 +9,16 @@ public class Warrior extends Player {
         super(name, 260, 40, 20, 30);
     }
 
-    /**
-     * Warrior's special skill.
-     * Deals BasicAttack damage to target and stuns for 2 turns.
-     * Actual execution handled by ShieldBash class in com.combat.actions.
-     * Calling ShieldBash from com.combat.actions
-     */
+
+      // Warrior's special skill.
+     // Deals BasicAttack damage to target and stuns for 2 turns.
+     // Actual execution handled by ShieldBash class in com.combat.actions.
+     // Calling ShieldBash from com.combat.actions
 
 
-    /**
-     * Player chooses action via GameCLI.
-     * BattleEngine passes the chosen Action back to execute.
-     * Calling Action interface from com.combat.actions
-     */
+    // Player chooses action via GameCLI.
+     // BattleEngine passes the chosen Action back to execute.
+     // Calling Action interface from com.combat.actions
 
     @Override
     public Action performAction() {

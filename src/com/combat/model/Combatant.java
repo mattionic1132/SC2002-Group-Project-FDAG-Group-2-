@@ -72,30 +72,31 @@ public abstract class Combatant {
     // changed Object to Action after status effect merged
     public abstract Action performAction();
 
-    // Getters
+    // getters
 
-    public String getName()               { return name; }
-    public int getHp()                    { return hp; }
-    public int getMaxHp()                 { return maxHp; }
-    public int getAttack()                { return attack; }
-    public int getDefense()               { return defense; }
-    public int getSpeed()                 { return speed; }
+    public String getName() { return name; }
+    public int getHp() { return hp; }
+    public int getMaxHp() { return maxHp; }
+    public int getAttack() { return attack; }
+    public int getDefense()  { return defense; }
+    public int getSpeed() { return speed; }
 
     public List<StatusEffect> getStatusEffects() { return statusEffects; }
 
-    // Setters
+    // setters - set the hp,attack and defence
+    // note PLayer and Enemy access these using super call but no impleementation
 
-    public void setHp(int hp)                         { this.hp = Math.max(0, Math.min(hp, maxHp)); }
-    public void setAttack(int attack)                 { this.attack = attack; }
-    public void setDefense(int defense)               { this.defense = defense; }
+    public void setHp(int hp) { this.hp = Math.max(0, Math.min(hp, maxHp)); }
+    public void setAttack(int attack) { this.attack = attack; }
+    public void setDefense(int defense) { this.defense = defense; }
 
     // matt added the booleans and bool setter for smoke bomb
     private boolean smokeBombActive = false;
-    public boolean isSmokeBombActive()             { return smokeBombActive; }
+    public boolean isSmokeBombActive() { return smokeBombActive; }
     public void setSmokeBombActive(boolean active) { this.smokeBombActive = active; }
 
     // for stun
     private boolean stunned = false;
-    public boolean isStunned()            { return stunned; }
+    public boolean isStunned() { return stunned; }
     public void setStunned(boolean stunned) { this.stunned = stunned; }
 }

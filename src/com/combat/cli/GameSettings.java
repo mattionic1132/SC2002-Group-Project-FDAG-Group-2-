@@ -13,7 +13,7 @@ public class GameSettings {
         this.difficulty = difficulty;
     }
 
-    // Getters only (Immutable data)
+    // getters dont want settings to change after init
     public int getCharacterType() { return characterType; }
     public int[] getItemIndices() { return itemIndices; }
     public Difficulty getDifficulty() { return difficulty; }

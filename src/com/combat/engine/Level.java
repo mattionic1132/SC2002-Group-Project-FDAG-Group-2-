@@ -6,12 +6,12 @@ import com.combat.model.Wolf;
 import java.util.ArrayList;
 import java.util.List;
 
-// Calling Enemy class from package com.combat.model
+
 public class Level {
 
     private Difficulty difficulty;
 
-    // Calling Enemy class from package com.combat.model
+    // calling Enemy class from package com.combat.model
     private List<Enemy> initialSpawn;
     private List<Enemy> backupSpawn;
     private boolean backupTriggered;

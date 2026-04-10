@@ -45,10 +45,8 @@ public class BattleEngine {
         this.roundCount = 0;
     }
 
-    /**
-     * Entry point called by GameCLI to start the battle loop.
-     * Calling GameCLI class from package com.combat.cli
-     */
+    //Entry point called by GameCLI to start the battle loop.
+    //Calling GameCLI class from package com.combat.cli
     public void startBattle() {
         System.out.println("\nBattle Start!\n");
 
@@ -69,22 +67,15 @@ public class BattleEngine {
     }
 
     // Rough layout og process below
-    /**
-     * Processes a single round of combat.
-     * Order of operations:
-     * 1. Increment roundCount
-     * 2. Check backup spawn via Level
-     * 3. Determine turn order via TurnOrderStrategy
-     * 4. For each combatant: apply status effects, check stun, execute action
-     * 5. Check battle end after each action
-     * 6. Display round summary via GameCLI
-     *
-     * Calling TurnOrderStrategy from package com.combat.engine
-     * Calling Combatant.applyStatusEffects() from package com.combat.model
-     * Calling Action.execute() from package com.combat.actions
-     * Calling StatusEffect.tick() from package com.combat.effects
-     * Calling GameCLI.showRoundSummary() from package com.combat.cli
-     */
+     // Processes a single round of combat.
+     // Order of operations:
+     // 1. Increment roundCount
+     // 2. Check backup spawn via Level
+     // 3. Determine turn order via TurnOrderStrategy
+     // 4. For each combatant: apply status effects, check stun, execute action
+     // 5. Check battle end after each action
+     // 6. Display round summary via GameCLI
+
 
     public void processRound() {
         // fix no counter
@@ -143,18 +134,9 @@ public class BattleEngine {
         cli.showRoundSummary(roundCount, allCombatants, false, player.getSpecialSkill(), potionCount, smokeBombCount);
     }
 
-    /**
-     * Checks if the battle has ended.
-     * Win condition: all enemies defeated and no backup remaining
-     * Lose condition: player hp reaches 0
-     *
-     * Calling Player.isAlive() from package com.combat.model
-     * Calling Enemy.isAlive() from package com.combat.model
-     * Calling GameCLI.showVictoryScreen() from package com.combat.cli
-     * Calling GameCLI.showDefeatScreen() from package com.combat.cli
-     *
-     * return true if battle is over
-     */
+    //Checks if the battle has ended.
+     //Win condition: all enemies defeated and no backup remaining
+    //Lose condition: player hp reaches 0
     public boolean checkBattleEnd() {
         // lose condition - player defeated
         if (!player.isAlive()) return true;
@@ -171,13 +153,9 @@ public class BattleEngine {
         return true;
     }
 
-    /**
-     * Spawns the backup wave of enemies mid-battle.
-     * Called when initial wave is fully defeated.
-     *
-     * Calling Level.getBackupEnemies() from package com.combat.engine
-     * Calling GameCLI from package com.combat.cli
-     */
+
+     //Spawns the backup wave of enemies mid-battle.
+     //Called when initial wave is fully defeated.
     public void triggerBackupSpawn() {
         List<Enemy> backup = level.getBackupEnemies();
         enemies.addAll(backup);
