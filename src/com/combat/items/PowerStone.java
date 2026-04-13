@@ -2,6 +2,7 @@ package com.combat.items;
 
 import com.combat.engine.BattleEngine;
 import com.combat.model.Combatant;
+import com.combat.model.Player;
 
 public class PowerStone implements Item {
 
@@ -30,6 +31,7 @@ public class PowerStone implements Item {
             return;
         }
         //implement powerstone effect: can use skill wo cooldown
+        ((Player) source).getSpecialSkill().execute(source, context.getAliveEnemies());
         System.out.println(source.getName() + " used " + name + "!");
         used = true;
     }

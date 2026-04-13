@@ -12,7 +12,11 @@ public class DefendBuff implements StatusEffect {
     public void apply(Combatant target) {
         // TODO: cast target to Combatant and call target.setDefense(target.getDefense() + DEFENSE_BONUS)
         // Calling Combatant.setDefense(), Combatant.getDefense() from com.combat.model
-        applied = true;
+        if (!applied) {
+            target.setDefense(target.getDefense() + DEFENSE_BONUS); //only apply defense buff if not applied yet
+            applied = true;
+        }
+
     }
 
     @Override

@@ -17,7 +17,7 @@ public class ShieldBash extends SpecialSkill {
         resetCooldown();
     }
 
-    // added the getting outcome for shiled bash
+    // added the getting outcome for shield bash
     @Override
     public String getOutcome(Combatant source, List<Combatant> targets) {
         Combatant target = targets.get(0);

@@ -31,6 +31,7 @@ public class Potion implements Item {
         }
         // TODO: Implement potion effect (e.g., restore HP to source)
         System.out.println(source.getName() + " used " + name + "!");
+        source.setHp(source.getHp() + 100);
         used = true;
     }
 }

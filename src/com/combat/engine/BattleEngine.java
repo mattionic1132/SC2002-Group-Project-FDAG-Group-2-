@@ -262,7 +262,7 @@ public class BattleEngine {
     }
 
     // returns list of enemies still alive this round
-    private List<Combatant> getAliveEnemies() {
+    public List<Combatant> getAliveEnemies() {
         List<Combatant> alive = new ArrayList<>();
         for (Enemy e : enemies) {
             if (e.isAlive()) alive.add(e);

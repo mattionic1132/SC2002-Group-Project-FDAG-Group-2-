@@ -1,5 +1,6 @@
 package com.combat.items;
 
+import com.combat.effects.SmokeBombEffect;
 import com.combat.engine.BattleEngine;
 import com.combat.model.Combatant;
 
@@ -30,6 +31,7 @@ public class SmokeBomb implements Item {
             return;
         }
         System.out.println(source.getName() + " used " + name + "!");
+        source.addStatusEffect(new SmokeBombEffect());
         used = true;
     }
 }
