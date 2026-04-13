@@ -1,5 +1,9 @@
 package com.combat;
 // re added jon's main bcos merge wrong git version
+// matt added main flow explanation --> main is used to:
+// handles the overall flow and calls the game menu
+// adds users' selections (character selection, item assignment, and level configuration)
+// calls an instance of game logic before the round starts.
 import com.combat.actions.ArcaneBlast;
 import com.combat.actions.ShieldBash;
 import com.combat.cli.GameCLI;

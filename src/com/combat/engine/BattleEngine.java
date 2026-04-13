@@ -119,6 +119,11 @@ public class BattleEngine {
                 List<Integer> choices = cli.promptPlayerAction(combatant, aliveEnemies);
                 handlePlayerAction((Player) combatant, choices, aliveEnemies);
 
+                // fix: decrement special skill cooldown each round after player acts
+                if (player.getSpecialSkill() != null) {
+                    player.getSpecialSkill().decrementCooldown();
+                }
+
             } else {
                 // enemy turn - always basic attack on player
                 handleEnemyAction((Enemy) combatant);

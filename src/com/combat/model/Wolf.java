@@ -4,10 +4,10 @@ import com.combat.actions.Action;
 import com.combat.actions.BasicAttack;
 public class Wolf extends Enemy {
 
-    private static final int WOLF_HP      = 40;
-    private static final int WOLF_ATTACK  = 45;
+    private static final int WOLF_HP= 40;
+    private static final int WOLF_ATTACK = 45;
     private static final int WOLF_DEFENSE = 5;
-    private static final int WOLF_SPEED   = 35;
+    private static final int WOLF_SPEED = 35;
 
     public Wolf(String name) {
         // Calling Enemy constructor from package com.combat.model

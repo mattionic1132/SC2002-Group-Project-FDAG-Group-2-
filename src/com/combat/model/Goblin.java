@@ -5,10 +5,10 @@ import com.combat.actions.BasicAttack;
 
 public class Goblin extends Enemy {
 
-    private static final int GOBLIN_HP      = 55;
-    private static final int GOBLIN_ATTACK  = 35;
+    private static final int GOBLIN_HP= 55;
+    private static final int GOBLIN_ATTACK = 35;
     private static final int GOBLIN_DEFENSE = 15;
-    private static final int GOBLIN_SPEED   = 25;
+    private static final int GOBLIN_SPEED= 25;
 
     public Goblin(String name) {
         // Calling Enemy constructor from package com.combat.model
