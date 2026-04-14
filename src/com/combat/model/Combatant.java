@@ -53,22 +53,24 @@ public abstract class Combatant {
     //fix: split into separate methods
     // apply effects and check expiry
     public void applyCurrentEffects() {
-        List<StatusEffect> expired = new ArrayList<>();
         for (StatusEffect effect : statusEffects) {
             effect.apply(this);
+        }
+    }
+
+    // decrement duration after turn ends
+    // expiry check happens after tick so effect lasts the correct number of turns
+    // fix for medium difficulty
+    public void tickStatusEffects() {
+        List<StatusEffect> expired = new ArrayList<>();
+        for (StatusEffect effect : statusEffects) {
+            effect.tick();
             if (effect.isExpired()) {
                 effect.remove(this);
                 expired.add(effect);
             }
         }
         statusEffects.removeAll(expired);
-    }
-
-    // decrement duration after turn ends
-    public void tickStatusEffects() {
-        for (StatusEffect effect : statusEffects) {
-            effect.tick();
-        }
     }
 
     // changed Object to StatusEffect after status effect merged

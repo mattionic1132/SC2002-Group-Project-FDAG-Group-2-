@@ -111,6 +111,8 @@ public class BattleEngine {
             // fix logic wrong from group review
             if (!combatant.canAct()) {
                 cli.showCombatantAction(combatant, "");
+                // still need to tick even if stunned - duration must count down
+                combatant.tickStatusEffects();
                 continue;
             }
 
@@ -126,12 +128,15 @@ public class BattleEngine {
                 List<Combatant> aliveEnemies = getAliveEnemies();
                 List<Integer> choices = cli.promptPlayerAction(combatant, aliveEnemies);
                 handlePlayerAction((Player) combatant, choices, aliveEnemies);
-                //decrement duration after the turn is done
-                combatant.tickStatusEffects();
+
             } else {
                 // enemy turn - always basic attack on player
                 handleEnemyAction((Enemy) combatant);
             }
+
+            //fixed wolf tick missing so wolf stays stunned incorrectly
+            // tick after every turn regardless of player or enemy
+            combatant.tickStatusEffects();
 
             // check if battle ended after every single action
             if (checkBattleEnd()) return;
