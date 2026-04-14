@@ -82,10 +82,7 @@ public class BattleEngine {
         roundCount++;
         System.out.println("\n======== ROUND " + roundCount + " ========");
 
-        // check if backup wave should spawn at start of round
-        if (level.shouldTriggerBackup()) {
-            triggerBackupSpawn();
-        }
+
 
         // build combatant list for this round (player + all alive enemies)
         List<Combatant> allCombatants = new ArrayList<>();
@@ -124,10 +121,15 @@ public class BattleEngine {
                 if (player.getSpecialSkill() != null) {
                     player.getSpecialSkill().decrementCooldown();
                 }
+                // if user chooses an invalid action, will be reprompted to choose a different action
+                // previous code skips this check so implementing it now
+                boolean actionTaken = false;
+                while (!actionTaken) {
+                    List<Combatant> aliveEnemies = getAliveEnemies();
+                    List<Integer> choices = cli.promptPlayerAction(combatant, aliveEnemies);
+                    actionTaken = handlePlayerAction((Player) combatant, choices, aliveEnemies);
+                }
 
-                List<Combatant> aliveEnemies = getAliveEnemies();
-                List<Integer> choices = cli.promptPlayerAction(combatant, aliveEnemies);
-                handlePlayerAction((Player) combatant, choices, aliveEnemies);
 
             } else {
                 // enemy turn - always basic attack on player
@@ -140,6 +142,11 @@ public class BattleEngine {
 
             // check if battle ended after every single action
             if (checkBattleEnd()) return;
+
+            // check if backup wave should spawn after every single action
+            if (level.shouldTriggerBackup()) {
+                triggerBackupSpawn();
+            }
         }
 
         // display end of round summary
@@ -183,7 +190,8 @@ public class BattleEngine {
     }
 
     // translates player menu choice into an action and executes it
-    private void handlePlayerAction(Player player, List<Integer> choices, List<Combatant> aliveEnemies) {
+    // changed from void to boolean -> if true, decision has been made, if false means invalid decision.
+    private boolean handlePlayerAction(Player player, List<Integer> choices, List<Combatant> aliveEnemies) {
         int actionChoice = choices.get(0);
         int targetIndex = choices.get(1);
 
@@ -200,30 +208,33 @@ public class BattleEngine {
             action = new Defend();
 
         } else if (actionChoice == 3) {
-            // use item - find first unused item in inventory
+            // prompt user to choose which item to use against enemies, if no items left, then return
+            List<Item> unusedItems = new ArrayList<>();
             for (Item item : player.getItems()) {
                 if (!item.isUsed()) {
-                    action = new UseItemAction(item, this);
-                    cli.showCombatantAction(player, item, "");
-                    break;
+                    unusedItems.add(item);
                 }
             }
-            // fix no = sign
-            if (action == null) {
-                System.out.println("No items available!");
-                return;
+            if (unusedItems.isEmpty()) {
+                System.out.println("No items available! Choose another option!");
+                return false;
             }
+            Item chosenItem = cli.promptItemAction(unusedItems);
+            action = new UseItemAction(chosenItem, this);
+            cli.showCombatantAction(player, chosenItem, "");
+
+
 
         } else if (actionChoice == 4) {
             // special skill - retrieve from player and check cooldown
             SpecialSkill skill = player.getSpecialSkill();
             if (skill == null) {
                 System.out.println("No special skill assigned!");
-                return;
+                return false;
             }
             if (!skill.isReady()) {
                 System.out.println("Special skill on cooldown! (" + skill.getCooldown() + " rounds remaining)");
-                return;
+                return false;
             }
             // shield bash needs a single target, arcane blast hits all enemies
             if (targetIndex >= 0) {
@@ -232,6 +243,9 @@ public class BattleEngine {
                 targets.addAll(aliveEnemies);
             }
             action = skill;
+            //resetCooldown only in effect if user chooses special skill directly
+            // wont be triggered by PowerStone
+            skill.resetCooldown();
         }
 
         if (action != null) {
@@ -245,6 +259,7 @@ public class BattleEngine {
             // showCombatantAction(subject, target, action, outcome) requires a target
             // so if target is null, print action result directly to avoid NullPointerException
             if (target == null) {
+                //shld we comment this out? adds duplicate line when items used
                 System.out.println(player.getName() + " -> " + action.getClass().getSimpleName() + outcome);
             }
 
@@ -257,15 +272,18 @@ public class BattleEngine {
                 if (!t.isAlive()) cli.showCombatantAction(t);
             }
         }
+        return true;
     }
 
     // enemy always performs basic attack on player
     private void handleEnemyAction(Enemy enemy) {
         // smoke bomb check - if active, enemy attack deals 0 damage
-        if (player.isSmokeBombActive()) {
-            System.out.println(enemy.getName() + " attacks but smoke bomb blocks all damage!");
-            return;
-        }
+
+        //removed smoke bomb check in battle engine. moving it to BasicAttack, since smokeBomb affects attacks
+        //if (player.isSmokeBombActive()) {
+         //   System.out.println(enemy.getName() + " attacks but smoke bomb blocks all damage!");
+           // return;
+        //}
 
         List<Combatant> targets = new ArrayList<>();
         targets.add(player);

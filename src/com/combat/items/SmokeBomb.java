@@ -32,6 +32,11 @@ public class SmokeBomb implements Item {
         }
         System.out.println(source.getName() + " used " + name + "!");
         source.addStatusEffect(new SmokeBombEffect());
+        //set to true only when used, so it will be detected in enemies Basic Attack
+        // before this was implemented, enemies still can attack that round even after player uses smokebomb
+        // this is because applyeffects is called at the start of the round, but smokebomb used mid-round, so it wont
+        //be accounted for. this is a solution to that.
+        source.setSmokeBombActive(true);
         used = true;
     }
 }

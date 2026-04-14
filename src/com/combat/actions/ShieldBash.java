@@ -14,7 +14,7 @@ public class ShieldBash extends SpecialSkill {
         int damage = Math.max(0, source.getAttack() - target.getDefense());
         target.takeDamage(damage);
         target.addStatusEffect(new StunEffect(2));
-        resetCooldown();
+        //resetCooldown() used to be here, removed because will trigger when PowerStone used
     }
 
     // added the getting outcome for shield bash

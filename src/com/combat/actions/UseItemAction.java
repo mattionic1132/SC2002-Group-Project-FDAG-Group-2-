@@ -22,6 +22,6 @@ public class UseItemAction implements Action {
     // added the get puctome implementation needed from interface
     @Override
     public String getOutcome(Combatant source, List<Combatant> targets) {
-        return ": HP restored";
+        return ":" + item.getName() + " used";
     }
 }

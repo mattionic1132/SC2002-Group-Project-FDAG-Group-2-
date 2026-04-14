@@ -199,5 +199,17 @@ public class GameCLI {
         System.out.println("-> Total Rounds Survived: " + roundNumber); // [cite: 59]
         System.out.println("\n==================================================");
     }
+
+    //prompt user to choose which items to use, will be called in BattleEngine
+    public Item promptItemAction(List<Item> unusedItems){
+        System.out.println("\nSelect an item to use: ");
+        for (int i = 0; i < unusedItems.size(); i++) {
+            System.out.println((i + 1) + ". " + unusedItems.get(i).getName());
+        }
+        System.out.print("Select an item: ");
+        int itemChoice = scanner.nextInt();
+        scanner.nextLine();
+        return unusedItems.get(itemChoice-1);
+    }
 }
 

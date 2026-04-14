@@ -5,7 +5,7 @@ import com.combat.model.Combatant;
 // Calling Combatant from com.combat.model
 public class SmokeBombEffect implements StatusEffect {
 
-    private int duration = 2;
+    private int duration = 3;
 
     @Override
     public void apply(Combatant target) {

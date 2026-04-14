@@ -11,6 +11,11 @@ public class BasicAttack implements Action {
 
         // BasicAttack hits one target
         Combatant target = targets.get(0);
+        //when enemies attack, checks if smokebomb active
+        if (target.isSmokeBombActive()){
+            System.out.println(source.getName() + " attacks but smoke bomb blocks all damage!");
+            return; //no damage will be dealt to player
+        }
 
         // damage formula: max(0, attacker attack - target defense)
         int damage = Math.max(0, source.getAttack() - target.getDefense());
@@ -21,6 +26,12 @@ public class BasicAttack implements Action {
     @Override
     public String getOutcome(Combatant source, List<Combatant> targets) {
         Combatant target = targets.get(0);
+
+        //outcome for smoke bomb
+        if (target.isSmokeBombActive()) {
+            return ": 0 damage (Smoke Bomb active)";
+        }
+
         int damage = Math.max(0, source.getAttack() - target.getDefense());
         String result = ": HP " + (target.getHp() + damage) + " -> " + target.getHp() + " (dmg: " + damage + ")";
         if (!target.isAlive()){

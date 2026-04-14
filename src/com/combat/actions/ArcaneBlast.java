@@ -1,7 +1,7 @@
 package com.combat.actions;
 
 import com.combat.model.Combatant;
-import com.combat.effects.ArcaneBuff;
+
 import java.util.List;
 
 public class ArcaneBlast extends SpecialSkill {
@@ -10,8 +10,8 @@ public class ArcaneBlast extends SpecialSkill {
     public void execute(Combatant source, List<Combatant> targets) {
         if (targets == null || targets.isEmpty()) return;
 
-        // create instance of Arcane buff before loop starts
-        ArcaneBuff buff = new ArcaneBuff();
+        //removed ArcaneBuff class, never used
+        // buff is implemented here anyways
 
         for (Combatant target : targets) {
             int damage = Math.max(0, source.getAttack() - target.getDefense());
@@ -26,7 +26,7 @@ public class ArcaneBlast extends SpecialSkill {
                 source.setAttack(source.getAttack() + 10);
             }
         }
-        resetCooldown();
+        //resetCooldown() used to be here, removed because will trigger when PowerStone used
     }
         // implement abstract method for Action
         @Override
