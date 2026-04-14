@@ -50,18 +50,25 @@ public abstract class Combatant {
     }
 
     // logic for applying status effects based on tick and duration
-    public void applyStatusEffects() {
+    //fix: split into separate methods
+    // apply effects and check expiry
+    public void applyCurrentEffects() {
         List<StatusEffect> expired = new ArrayList<>();
         for (StatusEffect effect : statusEffects) {
             effect.apply(this);
-            effect.tick();
-            // effect is removed via interface method when expired = True
             if (effect.isExpired()) {
                 effect.remove(this);
                 expired.add(effect);
             }
         }
         statusEffects.removeAll(expired);
+    }
+
+    // decrement duration after turn ends
+    public void tickStatusEffects() {
+        for (StatusEffect effect : statusEffects) {
+            effect.tick();
+        }
     }
 
     // changed Object to StatusEffect after status effect merged

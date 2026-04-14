@@ -103,8 +103,9 @@ public class BattleEngine {
             // skip if eliminated mid-round
             if (!combatant.isAlive()) continue;
 
+            // fix: need to split apply effects into two methods so that stun can last more than one round
             // apply status effects at start of each turn
-            combatant.applyStatusEffects();
+            combatant.applyCurrentEffects();
 
             // skip turn if stunned or otherwise prevented from acting
             // fix logic wrong from group review
@@ -115,15 +116,18 @@ public class BattleEngine {
 
             // player turn - get action choice from CLI
             if (combatant instanceof Player) {
-                List<Combatant> aliveEnemies = getAliveEnemies();
-                List<Integer> choices = cli.promptPlayerAction(combatant, aliveEnemies);
-                handlePlayerAction((Player) combatant, choices, aliveEnemies);
-
-                // fix: decrement special skill cooldown each round after player acts
+                // matt fixed: decrement special skill cooldown each round after player acts
+                //output shows at 2 at end of round means decrementing in same round
+                //decrement should be at start of round instead
                 if (player.getSpecialSkill() != null) {
                     player.getSpecialSkill().decrementCooldown();
                 }
 
+                List<Combatant> aliveEnemies = getAliveEnemies();
+                List<Integer> choices = cli.promptPlayerAction(combatant, aliveEnemies);
+                handlePlayerAction((Player) combatant, choices, aliveEnemies);
+                //decrement duration after the turn is done
+                combatant.tickStatusEffects();
             } else {
                 // enemy turn - always basic attack on player
                 handleEnemyAction((Enemy) combatant);
@@ -138,6 +142,8 @@ public class BattleEngine {
         int smokeBombCount = countItem("Smoke Bomb"); //must make sure follow exactly as in Main
         cli.showRoundSummary(roundCount, allCombatants, false, player.getSpecialSkill(), potionCount, smokeBombCount);
     }
+
+
 
     //Checks if the battle has ended.
      //Win condition: all enemies defeated and no backup remaining
