@@ -102,7 +102,7 @@ public class BattleEngine {
 
             // fix: need to split apply effects into two methods so that stun can last more than one round
             // apply status effects at start of each turn
-            combatant.applyCurrentEffects();
+
 
             // skip turn if stunned or otherwise prevented from acting
             // fix logic wrong from group review

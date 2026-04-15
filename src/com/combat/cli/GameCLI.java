@@ -10,6 +10,7 @@ import com.combat.model.Combatant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.InputMismatchException;
 
 public class GameCLI {
     private final Scanner scanner;
@@ -33,7 +34,8 @@ public class GameCLI {
         System.out.println("2. Wizard  (HP: 200, ATK: 50, DEF: 10, SPD: 20)");
         System.out.println("   Skill: Arcane Blast (AoE damage, +10 ATK per kill)");
         System.out.print("Selection (1,2): ");
-        int charChoice = scanner.nextInt();
+        // using helper method
+        int charChoice = getValidIntInput(1, 2);
 
         // picking items
         System.out.println("\n[STEP 2: SELECT TWO ITEMS]");
@@ -44,7 +46,8 @@ public class GameCLI {
         int[] itemChoices = new int[2];
         for (int i = 0; i < 2; i++) {
             System.out.print("Select Item " + (i + 1) + " (1,2,3): ");
-            itemChoices[i] = scanner.nextInt();
+            // using helper method
+            itemChoices[i] = getValidIntInput(1, 3);
         }
 
         // selecting Difficulty
@@ -53,7 +56,8 @@ public class GameCLI {
         System.out.println("2. Medium (Initial: 1 Goblin, 1 Wolf | Backup: 2 Wolves)");
         System.out.println("3. Hard   (Initial: 2 Goblins | Backup: 1 Goblin, 2 Wolves)");
         System.out.print("Selection: ");
-        int choice = scanner.nextInt();
+        // using helper method
+        int choice = getValidIntInput(1, 3);
         Difficulty difficulty = switch (choice) {
             case 1:
                 yield Difficulty.EASY;
@@ -114,8 +118,8 @@ public class GameCLI {
         System.out.println("4. Special Skill");
         System.out.print("Select an action (1-4): ");
 
-        int actionChoice = scanner.nextInt();
-        scanner.nextLine(); // Clear buffer
+        // using helper method
+        int actionChoice = getValidIntInput(1, 4);
         selections.add(actionChoice);
 
         // Selecting Target if Required
@@ -127,8 +131,8 @@ public class GameCLI {
                 System.out.println((i + 1) + ". " + e.getName() + " (HP: " + e.getHp() + ")");
             }
             System.out.print("Target choice: ");
-            int targetIndex = scanner.nextInt() - 1; // Convert to 0-based index
-            scanner.nextLine();
+            // using helper method
+            int targetIndex = getValidIntInput(1, enemies.size()) - 1;
             selections.add(targetIndex);
         } else {
             // No target needed for Defend (2), Items (3), or Wizard's Special Skill (4)
@@ -207,9 +211,28 @@ public class GameCLI {
             System.out.println((i + 1) + ". " + unusedItems.get(i).getName());
         }
         System.out.print("Select an item: ");
-        int itemChoice = scanner.nextInt();
-        scanner.nextLine();
-        return unusedItems.get(itemChoice-1);
+        // using helper method
+        int itemChoice = getValidIntInput(1, unusedItems.size());
+        return unusedItems.get(itemChoice - 1);
+    }
+    private int getValidIntInput(int min, int max) {
+        while (true) {
+            try {
+                // Clear out the scanner buffer by reading the entire line as a string first
+                String input = scanner.nextLine().trim();
+                if (input.isEmpty()) continue; // Ignore blank enters
+
+                int choice = Integer.parseInt(input);
+                if (choice >= min && choice <= max) {
+                    return choice;
+                } else {
+                    System.out.print("Invalid choice. Please enter a number between " + min + " and " + max + ": ");
+                }
+            } catch (NumberFormatException e) {
+                System.out.print("Invalid input. Please enter a valid number: ");
+            }
+        }
     }
 }
+
 

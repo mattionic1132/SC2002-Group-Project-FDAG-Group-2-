@@ -38,24 +38,19 @@ public abstract class Combatant {
     }
 
     // Status Checks
-
-    // Replaces isStunned(). Checks if any active effect prevents moving.
     public boolean canAct() {
+        // check the hardcoded boolean first
+        if (this.stunned) {
+            return false;
+        }
+
+        // check the interface list
         for (StatusEffect effect : statusEffects) {
             if (effect.preventsAction()) {
                 return false;
             }
         }
         return true;
-    }
-
-    // logic for applying status effects based on tick and duration
-    //fix: split into separate methods
-    // apply effects and check expiry
-    public void applyCurrentEffects() {
-        for (StatusEffect effect : statusEffects) {
-            effect.apply(this);
-        }
     }
 
     // decrement duration after turn ends
@@ -73,9 +68,10 @@ public abstract class Combatant {
         statusEffects.removeAll(expired);
     }
 
-    // changed Object to StatusEffect after status effect merged
+    // apply the effect exactly once the moment it is added
     public void addStatusEffect(StatusEffect effect) {
         this.statusEffects.add(effect);
+        effect.apply(this);
     }
 
     // changed Object to Action after status effect merged
