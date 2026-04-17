@@ -27,4 +27,6 @@ public abstract class SpecialSkill implements Action {
     // abstract - forces ShieldBash and ArcaneBlast to implement it
     @Override
     public abstract void execute(Combatant source, List<Combatant> targets);
+    public abstract boolean requiresTargets();
 }
+

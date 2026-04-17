@@ -6,6 +6,7 @@ import com.combat.engine.Difficulty;
 import com.combat.items.Item;
 import com.combat.model.Enemy;
 import com.combat.model.Combatant;
+import com.combat.model.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,7 +70,7 @@ public class GameCLI {
                 System.out.println("Invalid choice. Defaulting to EASY.");
                 yield Difficulty.EASY;
         };
-        scanner.nextLine();
+        //scanner.nextLine();
 
         System.out.println("\nLoading Battle... Good luck!\n");
 
@@ -107,6 +108,7 @@ public class GameCLI {
 
 
     //Input for Player Choices
+    //Input for Player Choices
     public List<Integer> promptPlayerAction(Combatant subject, List<Combatant> enemies) {
         List<Integer> selections = new ArrayList<>();
 
@@ -122,9 +124,19 @@ public class GameCLI {
         int actionChoice = getValidIntInput(1, 4);
         selections.add(actionChoice);
 
+        //ask the skill itself whether it needs a target instead of hardcoding by player name
+        //adding a new player class with any skill: no change to GameCLI required
+        // doesnt violate OCP
+        boolean needsTarget = (actionChoice == 1);
+        if (actionChoice == 4 && subject instanceof Player) {
+            SpecialSkill skill = ((Player) subject).getSpecialSkill();
+            if (skill != null && skill.requiresTargets()) {
+                needsTarget = true;
+            }
+        }
+
         // Selecting Target if Required
-        // Basic Attack (1) and Shield Bash (Warrior Special - 4) require a target
-        if (actionChoice == 1 || (actionChoice == 4 && subject.getName().equals("Warrior"))) {
+        if (needsTarget) {
             System.out.println("\nSelect a target:");
             for (int i = 0; i < enemies.size(); i++) {
                 Combatant e = enemies.get(i);
@@ -135,12 +147,11 @@ public class GameCLI {
             int targetIndex = getValidIntInput(1, enemies.size()) - 1;
             selections.add(targetIndex);
         } else {
-            // No target needed for Defend (2), Items (3), or Wizard's Special Skill (4)
+            // No target needed for Defend (2), Items (3), or a skill that hits all enemies
             selections.add(-1);
         }
         //returns [action choice, target choice or -1] as integers
         return selections;
-
     }
 
 

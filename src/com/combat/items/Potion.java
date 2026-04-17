@@ -3,6 +3,8 @@ package com.combat.items;
 import com.combat.engine.BattleEngine;
 import com.combat.model.Combatant;
 
+import java.util.List;
+
 public class Potion implements Item {
 
     private String name;
@@ -24,7 +26,7 @@ public class Potion implements Item {
     }
 
     @Override
-    public void use(Combatant source, BattleEngine context) {
+    public void use(Combatant source, List<Combatant> targets) {
         if (used) {
             System.out.println(name + " has already been used!");
             return;

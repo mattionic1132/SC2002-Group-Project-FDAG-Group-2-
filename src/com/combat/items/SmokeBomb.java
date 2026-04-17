@@ -1,8 +1,9 @@
 package com.combat.items;
 
 import com.combat.effects.SmokeBombEffect;
-import com.combat.engine.BattleEngine;
 import com.combat.model.Combatant;
+
+import java.util.List;
 
 public class SmokeBomb implements Item {
 
@@ -25,7 +26,7 @@ public class SmokeBomb implements Item {
     }
 
     @Override
-    public void use(Combatant source, BattleEngine context) {
+    public void use(Combatant source, List<Combatant> targets) {
         if (used) {
             System.out.println(name + " has already been used!");
             return;

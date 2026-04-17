@@ -8,16 +8,16 @@ import java.util.List;
 public class UseItemAction implements Action {
 
     private Item item;
-    private BattleEngine context;
+    private List<Combatant> aliveEnemies;
 
-    public UseItemAction(Item item, BattleEngine context) {
+    public UseItemAction(Item item, List<Combatant> aliveEnemies) {
         this.item = item;
-        this.context = context;
+        this.aliveEnemies = aliveEnemies;
     }
 
     @Override
     public void execute(Combatant source, List<Combatant> targets){
-        item.use(source, context);
+        item.use(source, aliveEnemies);
     }
     // added the get puctome implementation needed from interface
     @Override

@@ -220,7 +220,7 @@ public class BattleEngine {
                 return false;
             }
             Item chosenItem = cli.promptItemAction(unusedItems);
-            action = new UseItemAction(chosenItem, this);
+            action = new UseItemAction(chosenItem, aliveEnemies);
             cli.showCombatantAction(player, chosenItem, "");
 
 

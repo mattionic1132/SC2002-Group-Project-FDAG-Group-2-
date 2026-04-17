@@ -40,4 +40,9 @@ public class ArcaneBlast extends SpecialSkill {
             return result.toString();
         }
 
+    @Override
+    public boolean requiresTargets(){
+        return false;
+    }
+
     }

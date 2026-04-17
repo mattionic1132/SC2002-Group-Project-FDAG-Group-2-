@@ -28,4 +28,9 @@ public class ShieldBash extends SpecialSkill {
         }
         return result;
     }
+
+    @Override
+    public boolean requiresTargets(){
+        return true;
+    }
 }

@@ -4,6 +4,8 @@ import com.combat.engine.BattleEngine;
 import com.combat.model.Combatant;
 import com.combat.model.Player;
 
+import java.util.List;
+
 public class PowerStone implements Item {
 
     private String name;
@@ -25,13 +27,19 @@ public class PowerStone implements Item {
     }
 
     @Override
-    public void use(Combatant source, BattleEngine context) {
+    public void use(Combatant source, List<Combatant> targets) {
         if (used) {
             System.out.println(name + " has already been used!");
             return;
         }
+        //added check. if no check, then if source were to be casted to enemy, it will crash
+        // violating LSP
+        if (!(source instanceof Player)) {
+            System.out.println("Only players can use PowerStone!");
+            return;
+        }
         //implement powerstone effect: can use skill wo cooldown
-        ((Player) source).getSpecialSkill().execute(source, context.getAliveEnemies());
+        ((Player) source).getSpecialSkill().execute(source, targets);
         System.out.println(source.getName() + " used " + name + "!");
         used = true;
     }
