@@ -244,6 +244,19 @@ public class GameCLI {
             }
         }
     }
+
+    // method for prompting player for target options when using PowerStone
+    // placed it here instead of BattleEngine since CLI handles the UI and prompting
+    public int promptTargetChoice(List<Combatant> enemies) {
+
+        System.out.println("\nSelect a target:");
+        for (int i = 0; i < enemies.size(); i++) {
+            Combatant e = enemies.get(i);
+            System.out.println((i + 1) + ". " + e.getName() + " (HP: " + e.getHp() + ")");
+        }
+        System.out.print("Target choice: ");
+        return getValidIntInput(1, enemies.size()) - 1;
+    }
 }
 
 

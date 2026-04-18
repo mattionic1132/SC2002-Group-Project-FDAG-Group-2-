@@ -7,6 +7,7 @@ import com.combat.actions.SpecialSkill;
 import com.combat.actions.UseItemAction;
 import com.combat.cli.GameCLI;
 import com.combat.items.Item;
+import com.combat.items.PowerStone;
 import com.combat.model.Combatant;
 import com.combat.model.Enemy;
 import com.combat.model.Player;
@@ -220,7 +221,18 @@ public class BattleEngine {
                 return false;
             }
             Item chosenItem = cli.promptItemAction(unusedItems);
-            action = new UseItemAction(chosenItem, aliveEnemies);
+
+            // adding functionality to let player choose target for Power Stone (Warrior)
+            List<Combatant> chosenEnemies = aliveEnemies;
+            if (chosenItem instanceof PowerStone) {
+                SpecialSkill skill = player.getSpecialSkill();
+                if (skill != null && skill.requiresTargets()) {
+                    int chosenIndex = cli.promptTargetChoice(aliveEnemies);
+                    chosenEnemies = new ArrayList<>();
+                    chosenEnemies.add(aliveEnemies.get(chosenIndex));
+                }
+            }
+            action = new UseItemAction(chosenItem, chosenEnemies);
             cli.showCombatantAction(player, chosenItem, "");
 
 
