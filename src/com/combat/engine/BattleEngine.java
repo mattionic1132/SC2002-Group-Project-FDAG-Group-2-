@@ -15,11 +15,6 @@ import com.combat.model.Player;
 import java.util.ArrayList;
 import java.util.List;
 
-// NOTE: firsy draft of Battle Engine but need to figure out whether:
-// restructure player and special Skill
-// check for error and do main after
-
-
 public class BattleEngine {
 
     // Calling Player class from package com.combat.model
@@ -67,7 +62,7 @@ public class BattleEngine {
         }
     }
 
-    // Rough layout og process below
+    // Rough layout of process below
      // Processes a single round of combat.
      // Order of operations:
      // 1. Increment roundCount
@@ -79,7 +74,7 @@ public class BattleEngine {
 
 
     public void processRound() {
-        // fix no counter
+        // fixed missing counter
         roundCount++;
         System.out.println("\n======== ROUND " + roundCount + " ========");
 

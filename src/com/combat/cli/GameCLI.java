@@ -103,7 +103,7 @@ public class GameCLI {
     public void showCombatantAction(Combatant subject, Combatant target, Action action, String turnOutcome) {
         System.out.println(subject.getName() + " -> " + action.getClass().getSimpleName() + " -> " + target.getName() + turnOutcome);
     }
-    //TODO: turnOutcome logic (target HP change, StatusEffects updates)
+    //turnOutcome logic (target HP change, StatusEffects updates)
 
 
 

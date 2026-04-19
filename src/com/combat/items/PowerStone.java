@@ -1,9 +1,7 @@
 package com.combat.items;
 
-import com.combat.engine.BattleEngine;
 import com.combat.model.Combatant;
 import com.combat.model.Player;
-
 import java.util.List;
 
 public class PowerStone implements Item {

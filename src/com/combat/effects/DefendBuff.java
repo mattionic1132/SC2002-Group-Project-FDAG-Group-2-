@@ -27,7 +27,7 @@ public class DefendBuff implements StatusEffect {
     @Override
     public void tick() {
         duration--;
-        // TODO: when expired, reverse the defense bonus on target
+        // when expired, reverse the defense bonus on target
         // Calling Combatant.setDefense() from com.combat.model
     }
 

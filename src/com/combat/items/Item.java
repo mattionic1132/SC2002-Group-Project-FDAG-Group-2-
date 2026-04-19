@@ -1,8 +1,6 @@
 package com.combat.items;
 
-import com.combat.engine.BattleEngine;
 import com.combat.model.Combatant;
-
 import java.util.List;
 
 public interface Item {
